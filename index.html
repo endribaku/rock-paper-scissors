@@ -6,9 +6,17 @@
 </head>
 
 <body>
-
+ <h1>Rock Paper Scissors</h1>
+ <div class="buttons"></div>
+ <div class="results"></div>
+ <div class="scores"></div>
+ <div class="winner"></div>
 </body>
 <script>
+     const results = document.querySelector(".results");
+     const score = document.querySelector(".scores");
+     const winner = document.querySelector(".winner");
+    
 //   Computer Choice
    function getComputerChoice() {
     let value = Math.floor(Math.random() * 3);
@@ -26,45 +34,45 @@
 
 // Function Play Round
    function playRound(humanChoice, computerChoice) {
-      if(humanChoice == "ROCK") {
+      if(humanChoice == "rock") {
         if(computerChoice == "rock") {
-            console.log("Nobody Wins");
+            results.textContent = "Nobody Wins";
             return;
         }
         if(computerChoice == "paper") {
-            console.log("You lose! Paper beats Rock.");
+            results.textContent = "You lose! Paper beats Rock.";
             computerScore++;
         }
         if(computerChoice == "scissors") {
-            console.log("You win! Rock beats Scissors");
+            results.textContent = "You win! Rock beats Scissors";
             humanScore++;
         }
       }
-      if(humanChoice == "PAPER") {
+      if(humanChoice == "paper") {
         if(computerChoice == "paper") {
-            console.log("Nobody Wins");
+            results.textContent = "Nobody Wins";
             return;
         }
         if(computerChoice == "rock") {
-            console.log("You win! Paper beats Rock.");
+            results.textContent = "You win! Paper beats Rock.";
             humanScore++;
         }
         if(computerChoice == "scissors") {
-            console.log("You lose! Scissors beats Paper");
+            results.textContent = "You lose! Scissors beats Paper";
             computerScore++;
         }
       }
-      if(humanChoice == "SCISSORS") {
+      if(humanChoice == "scissors") {
         if(computerChoice == "scissors") {
-            console.log("Nobody Wins");
+            results.textContent = "Nobody Wins";
             return;
         }
         if(computerChoice == "rock") {
-            console.log("You lose! Rock beats Scissors");
+            results.textContent = "You lose! Rock beats Scissors";
             computerScore++;
         }
         if(computerChoice == "paper") {
-            console.log("You win! Scissors beats Paper");
+            results.textContent = "You win! Scissors beats Paper";
             humanScore++;
         }
       }
@@ -80,10 +88,63 @@
     }
    
 // Call function to play game
+    
+    const rock = document.createElement("button");
+    rock.textContent = "Rock";
+    document.querySelector(".buttons").appendChild(rock);
 
-   playGame();
-   console.log(`Human Score: ${humanScore}`);
-   console.log(`Computer socre: ${computerScore}`);
+    const paper = document.createElement("button");
+    paper.textContent = "Paper";
+    document.querySelector(".buttons").appendChild(paper);
+
+    const scissors = document.createElement("button");
+    scissors.textContent = "Scissors";
+    document.querySelector(".buttons").appendChild(scissors);
+
+   
+
+
+    const buttonList = document.querySelector(".buttons");
+    buttonList.addEventListener("click", function handleClick(event) {
+        let choice;
+        let computerChoice = getComputerChoice();
+        if(event.target == rock) {
+            choice = "rock";
+        } else if(event.target == paper) {
+            choice = "paper";
+        } else {
+            choice = "scissors";
+        }
+        playRound(choice, computerChoice);
+        score.textContent = `Human: ${humanScore}, Computer: ${computerScore}`;
+
+        if(humanScore == 5 || computerScore == 5) {
+            if(humanScore == 5) {
+                winner.textContent = "Human Wins.";
+            } else {
+                winner.textContent = "Computer Wins.";
+            }
+            humanScore = 0;
+            computerScore = 0;
+            buttonList.removeEventListener("click", handleClick);
+            const playAgain = document.createElement("button")
+            playAgain.textContent = "Play Again";
+            document.querySelector("body").appendChild(playAgain);
+            playAgain.addEventListener("click", function restart() {
+                buttonList.addEventListener("click", handleClick);
+                results.textContent = "";
+                score.textContent = "";
+                winner.textContent = "";
+                playAgain.remove();
+            }
+
+            )
+        }
+        
+        
+    });
+
+    
 
 </script>
 </html>
